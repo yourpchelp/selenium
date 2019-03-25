@@ -1,1 +1,1 @@
-# hello-world
+# project just for training needs
