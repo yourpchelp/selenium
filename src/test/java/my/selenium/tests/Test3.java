@@ -7,16 +7,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 //import org.openqa.selenium.support.ui.ExpectedConditions;
 //import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.Select;
-
+@Ignore
 public class Test3 {
 	private WebDriver driver;
 	private String baseURL = "http://demo.guru99.com/test/newtours/register.php";
 
 	@Before
 	public void setUp() throws Exception {
-//		System.setProperty("webdriver.gecko.driver","src/test/java/my/selenium/Drivers/geckodriver");
+//		System.setProperty("webdriver.gecko.driver","C:\\Selenium\\Drivers\\geckodriver.exe");
 //		driver = new FirefoxDriver();
-		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/Drivers/chromedriver");
+		System.setProperty("webdriver.chrome.driver","C:\\Selenium\\Drivers\\chromedriver.exe");
 		driver = new ChromeDriver();
 	}
 
