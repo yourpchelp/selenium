@@ -14,9 +14,9 @@ public class Test3 {
 
 	@Before
 	public void setUp() throws Exception {
-//		System.setProperty("webdriver.gecko.driver","src/test/java/my/selenium/Drivers/geckodriver.exe");
+//		System.setProperty("webdriver.gecko.driver","src/test/java/my/selenium/Drivers/geckodriver");
 //		driver = new FirefoxDriver();
-		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/Drivers/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/Drivers/chromedriver");
 		driver = new ChromeDriver();
 	}
 
