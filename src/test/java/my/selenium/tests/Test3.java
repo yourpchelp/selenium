@@ -19,10 +19,10 @@ public class Test3 {
 //		driver = new FirefoxDriver();
 		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/drivers/chromedriver");
 		ChromeOptions chromeOptions = new ChromeOptions();
-		chromeOptions.setBinary("/bin/google-chrome");
+//		chromeOptions.setBinary("/bin/google-chrome");
 //		chromeOptions.setBinary("/usr/bin/google-chrome");
 //		chromeOptions.addArguments("--headless");
-//		chromeOptions.setBinary("/path/to/other/chrome/binary");
+		chromeOptions.setBinary("/path/to/other/chrome/binary");
 		driver = new ChromeDriver();
 	}
 
