@@ -21,7 +21,7 @@ public class Test3 {
 		ChromeOptions chromeOptions = new ChromeOptions();
 //		chromeOptions.setBinary("/bin/google-chrome");
 //		chromeOptions.setBinary("/usr/bin/google-chrome");
-		chromeOptions.setBinary("/usr/bin/chrome");
+		chromeOptions.setBinary("/bin/chrome");
 //		chromeOptions.addArguments("--headless");
 //		chromeOptions.setBinary("/path/to/other/chrome/binary");
 		driver = new ChromeDriver();
