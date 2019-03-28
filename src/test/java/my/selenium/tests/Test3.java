@@ -2,9 +2,9 @@ package my.selenium.tests;
 
 import org.junit.*;
 import org.openqa.selenium.*;
-//import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+//import org.openqa.selenium.chrome.ChromeDriver;
+//import org.openqa.selenium.chrome.ChromeOptions;
 //import org.openqa.selenium.support.ui.ExpectedConditions;
 //import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.Select;
@@ -15,16 +15,16 @@ public class Test3 {
 
 	@Before
 	public void setUp() throws Exception {
-//		System.setProperty("webdriver.gecko.driver","C:\\Selenium\\Drivers\\geckodriver.exe");
-//		driver = new FirefoxDriver();
-		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/drivers/chromedriver");
-		ChromeOptions chromeOptions = new ChromeOptions();
+		System.setProperty("webdriver.gecko.driver","src/test/java/my/selenium/drivers/geckodriver");
+		driver = new FirefoxDriver();
+//		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/drivers/chromedriver");
+//		ChromeOptions chromeOptions = new ChromeOptions();
 //		chromeOptions.setBinary("/bin/google-chrome");
 //		chromeOptions.setBinary("/usr/bin/google-chrome");
-		chromeOptions.setBinary("/opt/google/chrome/chrome");
+//		chromeOptions.setBinary("/opt/google/chrome/chrome");
 //		chromeOptions.addArguments("--headless");
 //		chromeOptions.setBinary("/path/to/other/chrome/binary");
-		driver = new ChromeDriver();
+//		driver = new ChromeDriver();
 	}
 
 	@Test
