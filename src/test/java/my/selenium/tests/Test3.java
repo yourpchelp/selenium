@@ -4,6 +4,7 @@ import org.junit.*;
 import org.openqa.selenium.*;
 //import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 //import org.openqa.selenium.support.ui.ExpectedConditions;
 //import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.Select;
@@ -17,6 +18,10 @@ public class Test3 {
 //		System.setProperty("webdriver.gecko.driver","C:\\Selenium\\Drivers\\geckodriver.exe");
 //		driver = new FirefoxDriver();
 		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/drivers/chromedriver");
+		ChromeOptions chromeOptions = new ChromeOptions();
+		chromeOptions.setBinary("/usr/bin/google-chrome");
+//		chromeOptions.addArguments("--headless");
+//		chromeOptions.setBinary("/path/to/other/chrome/binary");
 		driver = new ChromeDriver();
 	}
 
