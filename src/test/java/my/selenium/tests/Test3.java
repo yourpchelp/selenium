@@ -27,6 +27,7 @@ public class Test3 {
 //		driver = new ChromeDriver();
 	}
 
+	
 	@Test
 	public void testA() throws InterruptedException {	    
 		driver.get(baseURL);
