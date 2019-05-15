@@ -17,7 +17,8 @@ public class Test3 {
 	public void setUp() throws Exception {
 //		System.setProperty("webdriver.gecko.driver","src/test/java/my/selenium/drivers/geckodriver");
 //		driver = new FirefoxDriver();
-		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/drivers/chromedriver");
+//		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/drivers/chromedriver");
+		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/drivers/chromedriver.exe");
 //		ChromeOptions chromeOptions = new ChromeOptions();
 //		chromeOptions.setBinary("/bin/google-chrome");
 //		chromeOptions.setBinary("/usr/bin/google-chrome");
