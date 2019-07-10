@@ -1,7 +1,7 @@
 package my.selenium.tests;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
@@ -26,8 +26,8 @@ public class CreateProject {
 	private RuumNavBar navBar = new RuumNavBar();
 	private String testProjName = CommonUtils.uniqueTestIdentifier();
 	
-	@BeforeClass
-	public static void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver","src/test/java/my/selenium/drivers/chromedriver75/chromedriver.exe");
 		driver = new ChromeDriver();
 //		driver.manage().timeouts().implicitlyWait(Params.timeOutInSeconds,TimeUnit.SECONDS);
@@ -55,17 +55,18 @@ public class CreateProject {
 	}
 	
 	@Test
-	public void test3_editProjectTitleFromInsideProject() throws Exception {
-		ruumList.addNewProjectFromTemplate(driver, "Sales Deal", testProjName);
+	public void test3_editProjectTitleFromInside() throws Exception {
+		ruumList.addNewProjectFromTemplate(driver, "Sales Deal", testProjName + "_toEditTitle");
 		driver.findElement(By.xpath(navBar.ruumLogo)).click();
-	    RuumListItem listItem = ruumList.getRuumListItemByName(driver, testProjName);
+	    RuumListItem listItem = ruumList.getRuumListItemByName(driver, testProjName + "_toEditTitle");
+	    listItem.isExist(driver);
 	    listItem.select(driver);
-	    project.setRuumTitle(driver, testProjName + "_title");
+	    project.setRuumTitle(driver, testProjName + "_titleEdited");
 	    //  the following click is used for exiting from title field
         driver.findElement(By.xpath(project.canvasSyncState)).click();
-        project.toHaveRuumTitle(driver, testProjName + "_title");
+        project.toHaveRuumTitle(driver, testProjName + "_titleEdited");
 	    driver.findElement(By.xpath(navBar.ruumLogo)).click();
-	    listItem = ruumList.getRuumListItemByName(driver, testProjName + "_title");
+	    listItem = ruumList.getRuumListItemByName(driver, testProjName + "_titleEdited");
 	    listItem.isExist(driver);
 	}
 
@@ -73,7 +74,13 @@ public class CreateProject {
 	public void test4_renameProjectFromOutside() throws Exception {
 		ruumList.addNewEmptyProject(driver, testProjName + "_toRename");
 		driver.findElement(By.xpath(navBar.ruumLogo)).click();
-		ruumList.renameRuum(driver, testProjName + "_toRename", testProjName + "_renamed");
+		RuumListItem listItem = ruumList.getRuumListItemByName(driver, testProjName + "_toRename");
+		listItem.isExist(driver);
+		listItem.renameRuum(driver, testProjName + "_renamed");
+	    driver.findElement(By.xpath(navBar.ruumLogo)).click();
+	    listItem = ruumList.getRuumListItemByName(driver, testProjName + "_renamed");
+	    listItem.isExist(driver);
+
 	}
 	
 	@Test
@@ -81,6 +88,7 @@ public class CreateProject {
 		ruumList.addNewProjectFromTemplate(driver, "Sales Deal", testProjName + "_invite");
 		driver.findElement(By.xpath(navBar.ruumLogo)).click();
 		RuumListItem listItem = ruumList.getRuumListItemByName(driver, testProjName + "_invite");
+		listItem.isExist(driver);
 		listItem.select(driver);
 		Thread.sleep(1000);
 		
@@ -105,7 +113,7 @@ public class CreateProject {
 	        //  login with previous user again and see changes in "Never Accessed"
 	    for (int i = 1; i > -1; i--) {
 	    	driver.findElement(By.xpath(navBar.ruumLogo)).click();
-	    	Thread.sleep(1000);
+	    	Thread.sleep(2000);
 	    	navBar.logout(driver);
 	        loginForm.login(driver, Params.personEmails[i],Params.userPassword);
 			listItem.select(driver);
@@ -127,11 +135,11 @@ public class CreateProject {
 		ruumList.leaveRuum(driver, testProjName + "_template");
 		ruumList.leaveRuum(driver, testProjName + "_renamed");
 		ruumList.leaveRuum(driver, testProjName + "_invite");
-		ruumList.leaveRuum(driver, testProjName + "_title");
+		ruumList.leaveRuum(driver, testProjName + "_titleEdited");
 	}
 	
-	@AfterClass
-	public static void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		driver.quit();
 	}
 
