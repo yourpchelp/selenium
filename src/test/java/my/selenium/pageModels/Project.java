@@ -19,7 +19,7 @@ public class Project {
     protected final String addSectionOptions = Params.dropdownOptions;
     public final String canvasSyncState = "//ruum-project//canvas-sync-state";
     protected final String ruumExpandCollapseSectionsButton = "//expand-collapse-sections-button//button";
-    protected final String parentGroupName = "//*[contains(@class, 'ruump-breadcrumb-group-name')]";
+    public final String parentGroupName = "//*[contains(@class, 'ruump-breadcrumb-group-name')]";
     protected RuumPopoverWindow popover = new RuumPopoverWindow();
     protected RuumModalWindow modalWindow = new RuumModalWindow();
     protected RuumNavBar navBar = new RuumNavBar();
@@ -59,7 +59,9 @@ public class Project {
     }
 
     public void hasSavedChanges(WebDriver driver) {
-    	Assert.assertTrue("'Saved' indicator is not shown", CommonUtils.isElementExists(driver, canvasSyncState + "//*[contains(text(),'Saved')]"));
+    	WebDriverWait wait = new WebDriverWait(driver, Params.timeOutInSeconds);
+		wait.until(ExpectedConditions.textToBe(By.xpath(canvasSyncState), "Saved"));
+//    	Assert.assertTrue("'Saved' indicator is not shown", CommonUtils.isElementExists(driver, canvasSyncState + "//*[contains(text(),'Saved')]"));
     }
     
     public void invitePerson(WebDriver driver, String personEmail) {
@@ -70,14 +72,19 @@ public class Project {
     	action.sendKeys(Keys.ENTER).build().perform();
     	modalWindow.pushButton(driver, "Invite");
         RuumSidePanel sidePanel = openSidePanel(driver,"Team");
-		WebDriverWait wait = new WebDriverWait(driver, Params.timeOutInSeconds);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(sidePanel.teamProjNotVisitedParticipants + "//*[contains(text(),'" + personEmail + "')]")));
-        Assert.assertTrue("New member " + personEmail + " is not invited", CommonUtils.isElementExists(driver, sidePanel.teamProjNotVisitedParticipants + "//*[contains(text(),'" + personEmail + "')]"));
+        try{
+        	WebDriverWait wait = new WebDriverWait(driver, Params.timeOutInSeconds);
+        	wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(sidePanel.teamProjNotVisitedParticipants + "//*[contains(text(),'" + personEmail + "')]")));
+        }
+        catch(Exception e){
+            Assert.fail("New member " + personEmail + " is not invited\n" + e);
+        }
     }
 
     public void removePerson(WebDriver driver, String personEmail) throws Exception {
     	RuumSidePanel sidePanel = openSidePanel(driver,"Team");
         sidePanel.removeParticipant(driver, personEmail);
+        hasSavedChanges(driver);
     }
 
     public void checkUsersNumber(WebDriver driver, int expectedNumber) {

@@ -1,8 +1,8 @@
 package my.selenium.utils;
 
 public class Params {
-//	public static final String baseURL = "https://open.staging-ruumapp.com";
-	public static final String baseURL = "https://open.ruumapp.com";
+	public static final String baseURL = "https://open.staging-ruumapp.com";
+//	public static final String baseURL = "https://open.ruumapp.com";
     public static final String[] personEmails = {
          "endtoendtestuser@loadtest.ruumapp.com",
          "endtoendtestuser1@loadtest.ruumapp.com",

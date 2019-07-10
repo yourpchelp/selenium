@@ -17,9 +17,9 @@ import my.selenium.utils.Params;
 public class RuumSidePanel {
 	protected final String ruumSidePanelXPath = "//ruum-sidepanel-container";
 	protected final String teamGroupParticipants = ruumSidePanelXPath + "//ruum-project-group-team-list-item";
-	protected final String teamProjActiveParticipants = ruumSidePanelXPath + "//ruum-project-team-active-participants//ruum-team-list-item";
+	public final String teamProjActiveParticipants = ruumSidePanelXPath + "//ruum-project-team-active-participants//ruum-team-list-item";
 	protected final String ruumSidepanelTitle = "//ruum-sidepanel-title";
-	protected final String teamProjNotVisitedParticipants = ruumSidePanelXPath + "//ruum-project-team-never-visited-participants//ruum-team-list-item";
+	public final String teamProjNotVisitedParticipants = ruumSidePanelXPath + "//ruum-project-team-never-visited-participants//ruum-team-list-item";
 	protected final String ruumDropdownButton = "//ruum-dropdown-desktop//*[@data-test='ruum-dropdown-button']";
 	protected final String teamInviteButton = ruumSidePanelXPath + "//ruum-participants-container//button//*[contains(text(),'Invite')]";
 	protected final String tasksPanelMenu = ruumSidePanelXPath + "//ruum-tasks-container//*[contains(@class,'header')]";
@@ -62,7 +62,12 @@ public class RuumSidePanel {
                 popover.pushButton(driver, "Remove from");  //  "Remove from Project" or "Remove from Group"
                 modalWindow.pushButton(driver, "Remove");
                 for (String elem : arr){
-                	Assert.assertTrue("Ruum member " + personEmail + " is not removed", CommonUtils.isElementNotExists(driver, elem));
+                    try{
+                    	wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(elem)));
+                    }
+                    catch(Exception e){
+                        Assert.fail("Ruum member " + personEmail + " is not removed\n" + e);
+                    }
                 }
                 break;
             }

@@ -5,9 +5,13 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import my.selenium.utils.CommonUtils;
 import my.selenium.utils.Params;
@@ -29,6 +33,10 @@ public class RuumList {
     protected Project project = new Project();
     protected LoginForm loginForm = new LoginForm();
     protected RuumNavBar navBar = new RuumNavBar();
+	
+	public boolean isEmpty(WebDriver driver){
+		return CommonUtils.isElementExists(driver, emptyState);
+	}
 	
 	public void isExist(WebDriver driver){
 		int size = driver.findElements(By.xpath(ruumList)).size();
@@ -72,9 +80,7 @@ public class RuumList {
 
         String newRuumTemplate = modalWindow.getProjectTemplate(templateName);
         modalWindow.pushButton(driver, "My Templates");
-//        driver.manage().timeouts().implicitlyWait(0,TimeUnit.SECONDS);
         boolean isTemplateAbsent = CommonUtils.isElementNotExists(driver, newRuumTemplate);
-//        driver.manage().timeouts().implicitlyWait(Params.timeOutInSeconds,TimeUnit.SECONDS);
         if (isTemplateAbsent){
         	modalWindow.pushButton(driver, "Featured");
         }
@@ -103,19 +109,29 @@ public class RuumList {
     	driver.findElement(By.xpath(modalWindow.inputFields)).clear();
     	driver.findElement(By.xpath(modalWindow.inputFields)).sendKeys(groupName);
     	modalWindow.pushButton(driver, "Create");
+    	WebDriverWait wait = new WebDriverWait(driver, Params.timeOutInSeconds);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(Params.busyState)));  //  Now wait for invisibility of busy-wheel first
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(navBar.ruumLogo)));
     	Thread.sleep(1000);
     }
     
     public void leaveRuum(WebDriver driver, String ruumTitle) throws Exception {
         RuumListItem listItem = getRuumListItemByName(driver, ruumTitle);
         listItem.isExist(driver);
-        driver.findElement(By.xpath(listItem.ruumListItemOptions)).click();
+        WebElement element = driver.findElement(By.xpath(listItem.ruumListItemOptions));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+    	WebDriverWait wait = new WebDriverWait(driver, Params.timeOutInSeconds);
+		wait.until(ExpectedConditions.elementToBeClickable(element));
+        element.click();
         popover.pushButton(driver, "Leave");
         modalWindow.pushButton(driver, "Cancel");
         listItem.isExist(driver);
         driver.findElement(By.xpath(listItem.ruumListItemOptions)).click();
         popover.pushButton(driver, "Leave");
         modalWindow.pushButton(driver, "Leave");
+//        WebDriverWait wait = new WebDriverWait(driver, Params.timeOutInSeconds);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(Params.busyState)));  //  Now wait for invisibility of busy-wheel first
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(Params.busyState)));  //  Now wait for invisibility of busy-wheel first
         Thread.sleep(1000);
         listItem.isNotExist(driver);
     }
@@ -297,17 +313,6 @@ public class RuumList {
         Assert.assertFalse("Search input field must disappear.", CommonUtils.isElementExists(driver, searchInputField));
         int itemsAfterCancelling = getNumberOfRuumListItems(driver);
         Assert.assertEquals("wrong number of ruums after search cancelling", allItems, itemsAfterCancelling);
-    }
-
-    public void renameRuum(WebDriver driver, String currentTitle, String newTitle) {
-        RuumListItem listItem = getRuumListItemByName(driver, currentTitle);
-        listItem.isExist(driver);
-        driver.findElements(By.xpath(listItem.ruumListItemXPath + "//*[contains(@class, 'ruum-lobby-item-more-options')]//button")).get(1).click();
-        driver.findElement(By.xpath(popover.getRuumPopoverOptions() + "//*[contains(text(),'Rename')]")).click();
-    	driver.findElement(By.xpath("//ruum-modal-dialog//form//input")).clear();
-    	driver.findElement(By.xpath("//ruum-modal-dialog//form//input")).sendKeys(newTitle);
-    	driver.findElement(By.xpath("//ruum-modal-dialog//form//button[contains(text(),'Update')]")).click();
-    	getRuumListItemByName(driver, newTitle).isExist(driver);
     }
 
     public void generateProjectReport(WebDriver driver, String projectName) throws Exception {

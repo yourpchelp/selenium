@@ -44,10 +44,8 @@ public class RuumListItem {
 		Assert.assertTrue(String.valueOf(size), size == 0);
 	}
 	
-	public void select(WebDriver driver) {
-		WebDriverWait wait = new WebDriverWait(driver, Params.timeOutInSeconds);
-		wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(ruumListItemName + "//a")));
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(ruumListItemName + "//a"))).click();
+	public void select(WebDriver driver) throws Exception {
+		driver.findElement(By.xpath(ruumListItemName + "//a")).click();
     }
 
     public String getRuumCreator(WebDriver driver) {
@@ -117,6 +115,17 @@ public class RuumListItem {
             Actions action = new Actions(driver);
         	action.sendKeys(Keys.ESCAPE).build().perform();  //  to close a popup
         }
+    }
+    
+    public void renameRuum(WebDriver driver, String newTitle) {
+    	driver.findElement(By.xpath(ruumListItemOptions)).click();
+    	driver.findElement(By.xpath(popover.getRuumPopoverOptions() + "//*[contains(text(),'Rename')]")).click();
+    	driver.findElement(By.xpath(modalWindow.inputFields)).click();  // only one input field exists now
+    	driver.findElement(By.xpath(modalWindow.inputFields)).clear();
+    	driver.findElement(By.xpath(modalWindow.inputFields)).sendKeys(newTitle);
+    	modalWindow.pushButton(driver, "Update");
+    	WebDriverWait wait = new WebDriverWait(driver, Params.timeOutInSeconds);
+		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.xpath(Params.busyState)));  //  Now wait for invisibility of busy-wheel first
     }
 
     public void moveProjectToGroup(WebDriver driver, String groupName) {
